@@ -1,6 +1,6 @@
 package main
 
-import "github.com/integrii/flaggy"
+import "github.com/diegosz/flaggy"
 
 // Declare variables and their defaults
 var stringFlagA = "defaultValueA"

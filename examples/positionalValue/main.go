@@ -1,6 +1,6 @@
 package main
 
-import "github.com/integrii/flaggy"
+import "github.com/diegosz/flaggy"
 
 func main() {
 	// Declare variables and their defaults

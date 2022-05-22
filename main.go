@@ -3,8 +3,8 @@
 // unnecessary complexeties.
 //
 // For a getting started tutorial and full feature list, check out the
-// readme at https://github.com/integrii/flaggy.
-package flaggy // import "github.com/integrii/flaggy"
+// readme at https://github.com/diegosz/flaggy.
+package flaggy // import "github.com/diegosz/flaggy"
 
 import (
 	"fmt"

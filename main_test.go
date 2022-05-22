@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/integrii/flaggy"
+	"github.com/diegosz/flaggy"
 )
 
 func TestMain(m *testing.M) {

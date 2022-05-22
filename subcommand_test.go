@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/integrii/flaggy"
+	"github.com/diegosz/flaggy"
 )
 
 func TestSCNameExists(t *testing.T) {

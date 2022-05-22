@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/integrii/flaggy"
+	"github.com/diegosz/flaggy"
 )
 
 // Declare variables and their defaults

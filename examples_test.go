@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/integrii/flaggy"
+	"github.com/diegosz/flaggy"
 )
 
 // ExampleSubcommand_AddPositionalValue adds two levels of subcommands with a
