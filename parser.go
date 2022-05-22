@@ -24,6 +24,7 @@ type Parser struct {
 	trailingArgumentsExtracted bool               // indicates that trailing args have been parsed and should not be appended again
 	parsed                     bool               // indicates this parser has parsed
 	subcommandContext          *Subcommand        // points to the most specific subcommand being used
+	AllowReParse               bool               // indicates this parser could be re-parsed
 }
 
 // TrailingSubcommand returns the last and most specific subcommand invoked.
@@ -50,7 +51,7 @@ func NewParser(name string) *Parser {
 // is a low level issue converting flags to their proper type.  No error
 // is returned for invalid arguments or missing require subcommands.
 func (p *Parser) ParseArgs(args []string) error {
-	if p.parsed {
+	if p.parsed && !p.AllowReParse {
 		return errors.New("Parser.Parse() called twice on parser with name: " + " " + p.Name + " " + p.ShortName)
 	}
 	p.parsed = true
