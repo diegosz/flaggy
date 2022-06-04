@@ -523,6 +523,35 @@ func TestCustomInputParsing(t *testing.T) {
 	}
 	var dateFlagSliceExpected = []DateZ{dateA, dateB, dateC, dateD}
 
+	var timeFlag TimeZ
+	Time(&timeFlag, "time", "timeFlag", "time flag")
+	inputArgs = append(inputArgs, "-time", "2006-01-02T15:04:05Z")
+	timeFlagExpected, err := NewTimeZ("2006-01-02T15:04:05Z")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var timeFlagSlice []TimeZ
+	TimeSlice(&timeFlagSlice, "times", "timeFlagSlice", "time slice flag")
+	inputArgs = append(inputArgs, "-times", "2006-01-02T15:04:05Z", "-times", "", "-times", "2006-01-02T15:04:05-03:00", "-times", "2006-01-02T15:04:05+03:00")
+	timeA, err := NewTimeZ("2006-01-02T15:04:05Z")
+	if err != nil {
+		t.Fatal(err)
+	}
+	timeB, err := NewTimeZ("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	timeC, err := NewTimeZ("2006-01-02T15:04:05-03:00")
+	if err != nil {
+		t.Fatal(err)
+	}
+	timeD, err := NewTimeZ("2006-01-02T15:04:05+03:00")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var timeFlagSliceExpected = []TimeZ{timeA, timeB, timeC, timeD}
+
 	// display help with all flags used
 	ShowHelp("Showing help for test: " + t.Name())
 
@@ -538,6 +567,16 @@ func TestCustomInputParsing(t *testing.T) {
 	for i, f := range dateFlagSliceExpected {
 		if f.String() != dateFlagSlice[i].String() {
 			t.Fatal("date flag slice value incorrect", dateFlagSlice[i].String(), f.String())
+		}
+	}
+
+	if timeFlag.String() != timeFlagExpected.String() {
+		t.Fatal("time flag incorrect", timeFlag, timeFlagExpected)
+	}
+
+	for i, f := range timeFlagSliceExpected {
+		if f.String() != timeFlagSlice[i].String() {
+			t.Fatal("time flag slice value incorrect", timeFlagSlice[i].String(), f.String())
 		}
 	}
 }

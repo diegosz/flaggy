@@ -297,6 +297,17 @@ func DateSlice(assignmentVar *[]DateZ, shortName string, longName string, descri
 	DefaultParser.add(assignmentVar, shortName, longName, description)
 }
 
+// Time adds a new flaggy.TimeZ flag.
+func Time(assignmentVar *TimeZ, shortName string, longName string, description string) {
+	DefaultParser.add(assignmentVar, shortName, longName, description)
+}
+
+// TimeSlice adds a new flaggy.TimeZ slice flag.
+// Specify the flag multiple times to fill the slice.
+func TimeSlice(assignmentVar *[]TimeZ, shortName string, longName string, description string) {
+	DefaultParser.add(assignmentVar, shortName, longName, description)
+}
+
 // AttachSubcommand adds a subcommand for parsing
 func AttachSubcommand(subcommand *Subcommand, relativePosition int) {
 	DefaultParser.AttachSubcommand(subcommand, relativePosition)

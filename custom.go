@@ -59,3 +59,52 @@ func (d *DateZ) String() string {
 	t := d.Time()
 	return t.Format(DateZFormat)
 }
+
+// TimeZ represents a time.Time parsed and formatted with UTC RFC3339 format.
+type TimeZ time.Time
+
+// IsZero reports whether t represents the zero time.
+func (t TimeZ) IsZero() bool {
+	return time.Time(t).IsZero()
+}
+
+// NewTimeZ returns a new TimeZ. If date is "" a zero time instant is used to
+// create the TimeZ value.
+func NewTimeZ(value string) (TimeZ, error) {
+	var t time.Time
+	var err error
+	switch value {
+	case "":
+		t = time.Time{}
+	default:
+		t, err = time.Parse(time.RFC3339, value)
+		if err != nil {
+			return TimeZ{}, err
+		}
+	}
+	return TimeZ(t), nil
+}
+
+// EnvDecode complies with the envconfig.Decoder interface
+func (t *TimeZ) EnvDecode(value string) error {
+	tmp, err := NewTimeZ(value)
+	if err != nil {
+		return err
+	}
+	*t = tmp
+	return nil
+}
+
+// Time return the underline time.Time
+func (t *TimeZ) Time() time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	return time.Time(*t)
+}
+
+// String returns a textual representation of the time value formatted as
+// time.RFC3339.
+func (t *TimeZ) String() string {
+	return t.Time().Format(time.RFC3339)
+}
