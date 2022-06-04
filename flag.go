@@ -327,6 +327,21 @@ func (f *Flag) identifyAndAssignValue(value string) error {
 		existing := f.AssignmentVar.(*[]net.IPMask)
 		new := append(*existing, v)
 		*existing = new
+	case *DateZ:
+		v, err := NewDateZ(value)
+		if err != nil {
+			return err
+		}
+		existing := f.AssignmentVar.(*DateZ)
+		*existing = v
+	case *[]DateZ:
+		v, err := NewDateZ(value)
+		if err != nil {
+			return err
+		}
+		existing := f.AssignmentVar.(*[]DateZ)
+		new := append(*existing, v)
+		*existing = new
 	default:
 		return errors.New("Unknown flag assignmentVar supplied in flag " + f.LongName + " " + f.ShortName)
 	}
@@ -625,6 +640,16 @@ func (f *Flag) returnAssignmentVarValueAsString() (string, error) {
 		var strSlice []string
 		for _, m := range *val {
 			strSlice = append(strSlice, m.String())
+		}
+		return strings.Join(strSlice, ","), err
+	case *DateZ:
+		val := f.AssignmentVar.(*DateZ)
+		return val.String(), err
+	case *[]DateZ:
+		val := f.AssignmentVar.(*[]DateZ)
+		var strSlice []string
+		for _, d := range *val {
+			strSlice = append(strSlice, d.String())
 		}
 		return strings.Join(strSlice, ","), err
 	default:

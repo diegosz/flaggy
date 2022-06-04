@@ -286,6 +286,17 @@ func IPMaskSlice(assignmentVar *[]net.IPMask, shortName string, longName string,
 	DefaultParser.add(assignmentVar, shortName, longName, description)
 }
 
+// Date adds a new flaggy.DateZ flag.
+func Date(assignmentVar *DateZ, shortName string, longName string, description string) {
+	DefaultParser.add(assignmentVar, shortName, longName, description)
+}
+
+// DateSlice adds a new flaggy.DateZ slice flag.
+// Specify the flag multiple times to fill the slice.
+func DateSlice(assignmentVar *[]DateZ, shortName string, longName string, description string) {
+	DefaultParser.add(assignmentVar, shortName, longName, description)
+}
+
 // AttachSubcommand adds a subcommand for parsing
 func AttachSubcommand(subcommand *Subcommand, relativePosition int) {
 	DefaultParser.AttachSubcommand(subcommand, relativePosition)

@@ -482,3 +482,62 @@ func TestInputParsing(t *testing.T) {
 		}
 	}
 }
+
+// TestCustomInputParsing tests all flag types.
+func TestCustomInputParsing(t *testing.T) {
+	defer debugOff()
+	DebugMode = true
+
+	ResetParser()
+	var err error
+	inputArgs := []string{}
+
+	// Setup custom input arguments for every input type
+
+	var dateFlag DateZ
+	Date(&dateFlag, "date", "dateFlag", "date flag")
+	inputArgs = append(inputArgs, "-date", "2006-01-02")
+	dateFlagExpected, err := NewDateZ("2006-01-02")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var dateFlagSlice []DateZ
+	DateSlice(&dateFlagSlice, "dates", "dateFlagSlice", "date slice flag")
+	inputArgs = append(inputArgs, "-dates", "2006-01-02", "-dates", "0000-00-00", "-dates", "0001-01-01", "-dates", "0001-01-02")
+	dateA, err := NewDateZ("2006-01-02")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dateB, err := NewDateZ("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dateC, err := NewDateZ("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dateD, err := NewDateZ("0001-01-02")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var dateFlagSliceExpected = []DateZ{dateA, dateB, dateC, dateD}
+
+	// display help with all flags used
+	ShowHelp("Showing help for test: " + t.Name())
+
+	// Parse arguments
+	ParseArgs(inputArgs)
+
+	// validate parsed custom values
+
+	if dateFlag.String() != dateFlagExpected.String() {
+		t.Fatal("date flag incorrect", dateFlag, dateFlagExpected)
+	}
+
+	for i, f := range dateFlagSliceExpected {
+		if f.String() != dateFlagSlice[i].String() {
+			t.Fatal("date flag slice value incorrect", dateFlagSlice[i].String(), f.String())
+		}
+	}
+}
