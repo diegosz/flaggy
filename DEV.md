@@ -27,7 +27,7 @@ CCC = 3 digit 0 padded UPSTREAM_PATCH
 
 DDD = 3 digit 0 padded incremental counter starting in 1
 
-FORK_TAG = 1<AAA><BBB><CCC><DDD>
+FORK_TAG = <UPSTREAM_PATCH><AAA><BBB><CCC><DDD>
 
 v<UPSTREAM_MAYOR>.<UPSTREAM_MINOR>.<FORK_TAG>
 
@@ -45,13 +45,13 @@ For example:
 | 2.3.1    |                   |       |
 |          | 2.3.1002003001001 | ok    |
 | 2.3.2    |                   |       |
-|          | 2.3.1002003002001 | ok    |
-|          | 2.3.1002003002002 | ok    |
-|          | 2.3.1002003002003 | ok    |
+|          | 2.3.2002003002001 | ok    |
+|          | 2.3.2002003002002 | ok    |
+|          | 2.3.2002003002003 | ok    |
 | 2.4.1    |                   |       |
-|          | 2.3.1002004001001 | ok    |
+|          | 2.4.1002004001001 | ok    |
 | 3.3.1    |                   |       |
-|          | 2.3.1003003001001 | ok    |
+|          | 3.3.1003003001001 | ok    |
 
 Invalid options:
 
