@@ -17,12 +17,7 @@ func TestMinimalHelpOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("pipe: error: %s", err)
 	}
-	savedStderr := os.Stderr
-	os.Stderr = wr
-
-	defer func() {
-		os.Stderr = savedStderr
-	}()
+	p.Output = wr
 
 	p.ShowHelp()
 
@@ -82,14 +77,14 @@ func TestHelpOutput(t *testing.T) {
 	scX.Description = "This should be hidden."
 	scX.Hidden = true
 
-	var posA = "defaultPosA"
+	posA := "defaultPosA"
 	var posB string
 	p.AttachSubcommand(scA, 1)
 	scA.AttachSubcommand(scB, 1)
 	scA.AddPositionalValue(&posA, "testPositionalA", 2, false, "Test positional A does some things with a positional value.")
 	scB.AddPositionalValue(&posB, "hiddenPositional", 1, false, "Hidden test positional B does some less than serious things with a positional value.")
 	scB.PositionalFlags[0].Hidden = true
-	var stringFlag = "defaultStringHere"
+	stringFlag := "defaultStringHere"
 	var intFlag int
 	var boolFlag bool
 	var durationFlag time.Duration
@@ -104,12 +99,7 @@ func TestHelpOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("pipe: error: %s", err)
 	}
-	savedStderr := os.Stderr
-	os.Stderr = wr
-
-	defer func() {
-		os.Stderr = savedStderr
-	}()
+	p.Output = wr
 
 	if err := p.ParseArgs([]string{"subcommandA", "subcommandB", "hiddenPositional1"}); err != nil {
 		t.Fatalf("got: %s; want: no error", err)

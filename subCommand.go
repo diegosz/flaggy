@@ -48,7 +48,6 @@ func NewSubcommand(name string) *Subcommand {
 // all the flag names found (without values), a bool to indicate if help was
 // requested, and any errors found during parsing
 func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string, bool, error) {
-
 	var positionalOnlyArguments []string
 	var helpRequested bool // indicates the user has supplied -h and we
 	// should render help if we are the last subcommand
@@ -140,7 +139,6 @@ func (sc *Subcommand) parseAllFlagsFromArgs(p *Parser, args []string) ([]string,
 				debugPrint(sc.Name, "bool flag", a, "next var is:", nextArg)
 				// set the value in this subcommand and its root parser
 				valueSet, err := setValueForParsers(a, "true", p, sc)
-
 				// if an error occurs, just return it and quit parsing
 				if err != nil {
 					return []string{}, false, err
@@ -216,7 +214,6 @@ func (sc *Subcommand) findAllParsedValues() []parsedValue {
 // and subcommands parsed is returned so that the parser can ultimately decide
 // if there were any unexpected values supplied by the user
 func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
-
 	debugPrint("- Parsing subcommand", sc.Name, "with depth of", depth, "and args", args)
 
 	// if a command is parsed, its used
@@ -315,7 +312,7 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
 				// as a suggestion to the user before exiting.
 				if foundSubcommandAtDepth {
 					// determine which name to use in upcoming help output
-					fmt.Fprintln(os.Stderr, sc.Name+":", "No subcommand or positional value found at position", strconv.Itoa(relativeDepth)+".")
+					fmt.Fprintln(p.Output, sc.Name+":", "No subcommand or positional value found at position", strconv.Itoa(relativeDepth)+".")
 					var output string
 					for _, cmd := range sc.Subcommands {
 						if cmd.Hidden {
@@ -342,7 +339,6 @@ func (sc *Subcommand) parse(p *Parser, args []string, depth int) error {
 				// values to be added at the end of the arguments list without using the ---
 				// trailing arguments separator.
 				p.TrailingArguments = append(p.TrailingArguments, v)
-
 			}
 		}
 	}
@@ -385,7 +381,6 @@ func (sc *Subcommand) addParsedPositionalValue(value string) {
 // FlagExists lets you know if the flag name exists as either a short or long
 // name in the (sub)command
 func (sc *Subcommand) FlagExists(name string) bool {
-
 	for _, f := range sc.Flags {
 		if f.HasName(name) {
 			return true
@@ -397,7 +392,6 @@ func (sc *Subcommand) FlagExists(name string) bool {
 
 // AttachSubcommand adds a possible subcommand to the Parser.
 func (sc *Subcommand) AttachSubcommand(newSC *Subcommand, relativePosition int) {
-
 	// assign the depth of the subcommand when its attached
 	newSC.Position = relativePosition
 
@@ -431,7 +425,6 @@ func (sc *Subcommand) AttachSubcommand(newSC *Subcommand, relativePosition int) 
 // parser to ensure that the user isn't setting version or help flags that
 // conflict with the built-in help and version flag behavior.
 func (sc *Subcommand) add(assignmentVar interface{}, shortName string, longName string, description string) {
-
 	// if the flag is already used, throw an error
 	for _, existingFlag := range sc.Flags {
 		if longName != "" && existingFlag.LongName == longName {
@@ -662,7 +655,6 @@ func (sc *Subcommand) IPMaskSlice(assignmentVar *[]net.IPMask, shortName string,
 // AddPositionalValue adds a positional value to the subcommand.  the
 // relativePosition starts at 1 and is relative to the subcommand it belongs to
 func (sc *Subcommand) AddPositionalValue(assignmentVar *string, name string, relativePosition int, required bool, description string) {
-
 	// ensure no other positionals are at this depth
 	for _, other := range sc.PositionalFlags {
 		if relativePosition == other.Position {
@@ -692,7 +684,6 @@ func (sc *Subcommand) AddPositionalValue(assignmentVar *string, name string, rel
 // value, then send "true" or "false" as strings.  The returned bool indicates
 // that a value was set.
 func (sc *Subcommand) SetValueForKey(key string, value string) (bool, error) {
-
 	// debugPrint("Looking to set key", key, "to value", value)
 	// check for and assign flags that match the key
 	for _, f := range sc.Flags {

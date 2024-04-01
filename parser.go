@@ -3,10 +3,10 @@ package flaggy
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 	"strings"
-
 	"text/template"
 )
 
@@ -25,6 +25,7 @@ type Parser struct {
 	parsed                     bool               // indicates this parser has parsed
 	subcommandContext          *Subcommand        // points to the most specific subcommand being used
 	AllowReParse               bool               // indicates this parser could be re-parsed
+	Output                     io.Writer          // output writer for help and error messages, defaults to os.Stderr
 }
 
 // TrailingSubcommand returns the last and most specific subcommand invoked.
@@ -43,6 +44,7 @@ func NewParser(name string) *Parser {
 	p.ShowVersionWithVersionFlag = true
 	p.SetHelpTemplate(DefaultHelpTemplate)
 	p.subcommandContext = &Subcommand{}
+	p.Output = os.Stderr
 	return p
 }
 
@@ -192,13 +194,12 @@ func (p *Parser) ShowHelpAndExit(message string) {
 // message as a header.  The supplied subcommand will be the context of Help
 // displayed to the user.
 func (p *Parser) ShowHelpWithMessage(message string) {
-
 	// create a new Help values template and extract values into it
 	help := Help{}
 	help.ExtractValues(p, message)
-	err := p.HelpTemplate.Execute(os.Stderr, help)
+	err := p.HelpTemplate.Execute(p.Output, help)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error rendering Help template:", err)
+		fmt.Fprintln(p.Output, "Error rendering Help template:", err)
 	}
 }
 
